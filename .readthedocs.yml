@@ -1,0 +1,16 @@
+# https://docs.readthedocs.io/en/latest/yaml-config.html
+formats:
+  - htmlzip
+  - epub
+
+requirements_file: ci/rtd-requirements.txt
+
+# Currently RTD's default image only has 3.5
+# This gets us 3.6 (and hopefully 3.7 in the future)
+# https://docs.readthedocs.io/en/latest/yaml-config.html#build-image
+build:
+  image: latest
+
+python:
+  version: 3
+  pip_install: True

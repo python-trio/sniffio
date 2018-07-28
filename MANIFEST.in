@@ -1,0 +1,5 @@
+include README.rst CHEATSHEET.rst LICENSE* CODE_OF_CONDUCT* CONTRIBUTING*
+include .coveragerc .style.yapf
+include test-requirements.txt
+recursive-include docs *
+prune docs/build
