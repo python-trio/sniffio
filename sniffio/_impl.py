@@ -52,8 +52,11 @@ def current_async_library():
             current_task = asyncio.current_task
         except AttributeError:
             current_task = asyncio.Task.current_task
-        if current_task() is not None:
-            return "asyncio"
+        try:
+            if current_task() is not None:
+                return "asyncio"
+        except RuntimeError:
+            pass
     raise AsyncLibraryNotFoundError(
         "unknown async library, or not in async context"
     )
