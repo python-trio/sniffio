@@ -51,10 +51,10 @@ Adding support to a new async library
 If you'd like your library to be detected by ``sniffio``, it's pretty
 easy.
 
-Step 1: Pick the magic string that will identify your library. To
+**Step 1:** Pick the magic string that will identify your library. To
 avoid collisions, this should match your library's name on PyPI.
 
-Step 2: There's a special :class:`contextvars.ContextVar` object:
+**Step 2:** There's a special :class:`contextvars.ContextVar` object:
 
 .. data:: current_async_library_cvar
 
@@ -74,7 +74,7 @@ identifier string. In most cases, this will be as simple as:
         finally:
             current_async_library_cvar.reset(token)
 
-Step 3: Send us a PR to add your library to the list of supported
+**Step 3:** Send us a PR to add your library to the list of supported
 libraries above.
 
 That's it!
