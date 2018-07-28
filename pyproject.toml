@@ -3,5 +3,4 @@ package = "sniffio"
 filename = "docs/source/history.rst"
 directory = "newsfragments"
 underlines = ["-", "~", "^"]
-# COOKIECUTTER-TRIO-TODO: fill in the URL below to point to your issue tracker:
-issue_format = "`#{issue} <https://github.com/ACCOUNT/REPO/issues/{issue}>`__"
+issue_format = "`#{issue} <https://github.com/python-trio/sniffio/issues/{issue}>`__"
