@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 
 from .. import (
     current_async_library, AsyncLibraryNotFoundError,
@@ -22,6 +21,11 @@ def test_basics():
 
 
 def test_asyncio():
+    import asyncio
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
     ran = []
 
     async def this_is_asyncio():
@@ -32,3 +36,6 @@ def test_asyncio():
     loop.run_until_complete(this_is_asyncio())
     assert ran == [True]
     loop.close()
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
