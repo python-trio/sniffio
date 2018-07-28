@@ -1,3 +1,23 @@
+.. image:: https://img.shields.io/badge/chat-join%20now-blue.svg
+   :target: https://gitter.im/python-trio/general
+   :alt: Join chatroom
+
+.. image:: https://img.shields.io/badge/docs-read%20now-blue.svg
+   :target: https://sniffio.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
+.. image:: https://img.shields.io/pypi/v/sniffio.svg
+   :target: https://pypi.org/project/sniffio
+   :alt: Latest PyPi version
+
+.. image:: https://travis-ci.org/python-trio/sniffio.svg?branch=master
+   :target: https://travis-ci.org/python-trio/sniffio
+   :alt: Automated test status
+
+.. image:: https://codecov.io/gh/python-trio/sniffio/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/python-trio/sniffio
+   :alt: Test coverage
+
 =================================================================
 sniffio: Sniff out which async library your code is running under
 =================================================================
