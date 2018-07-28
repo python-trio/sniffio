@@ -54,10 +54,12 @@ easy.
 Step 1: Pick the magic string that will identify your library. To
 avoid collisions, this should match your library's name on PyPI.
 
-Step 2: Make sure that whenever your library is active, the
-``sniffio.current_async_library_cvar`` is set to this string. This is
-a :class:`contextvars.ContextVar` object. In most cases, this will be
-as simple as:
+Step 2: There's a special :class:`contextvars.ContextVar` object:
+
+.. data:: current_async_library_cvar
+
+Make sure that whenever your library is running, this is set to your
+identifier string. In most cases, this will be as simple as:
 
 .. code-block:: python3
 
@@ -84,14 +86,14 @@ transparently uses `the official contextvars backport
 <https://pypi.org/project/contextvars/>`__, so you don't need to worry
 about that.
 
-A general rule of thumb: the :class:`contextvars.ContextVar` object's
-value should be set to X exactly at those moments when ``await
-X.sleep(...)`` will work.
+There are libraries that can switch back and forth between different
+async modes within a single call-task – like ``trio_asyncio`` or
+Twisted's asyncio operability. These libraries should make sure to set
+the value back and forth at appropriate points.
 
-In more complicated cases, like libraries that can switch back and
-forth between different async flavors – e.g. ``trio_asyncio`` or
-Twisted's asyncio operability – you may need to make sure to set this
-variable back and forth at appropriate points.
+The general rule of thumb: :data:`current_async_library_cvar` should
+be set to X exactly at those moments when ``await X.sleep(...)`` will
+work.
 
 .. warning:: You shouldn't attempt to read the value of
    ``current_async_library_cvar`` directly –
