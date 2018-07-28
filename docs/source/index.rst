@@ -8,11 +8,12 @@
 sniffio: Sniff out which async library your code is running under
 =================================================================
 
-You're writing a library. You're ambitious, and want to support
-multiple async I/O packages, like [Trio](https://trio.readthedocs.io),
-and [asyncio](https://docs.python.org/3/library/asyncio.html), and ...
-You've written a bunch of clever code to handle all the differences.
-But... how do you know *which* piece of clever code to run?
+You're writing a library. You've decided to be ambitious, and support
+multiple async I/O packages, like `Trio
+<https://trio.readthedocs.io>`__, and `asyncio
+<https://docs.python.org/3/library/asyncio.html>`__, and ... You've
+written a bunch of clever code to handle all the differences. But...
+how do you know *which* piece of clever code to run?
 
 This is a tiny package whose only purpose is to let you detect which
 async library your code is running under.
