@@ -30,6 +30,8 @@ def test_asyncio():
 
     async def this_is_asyncio():
         assert current_async_library() == "asyncio"
+        # Call it a second time to exercise the caching logic
+        assert current_async_library() == "asyncio"
         ran.append(True)
 
     loop = asyncio.get_event_loop()
