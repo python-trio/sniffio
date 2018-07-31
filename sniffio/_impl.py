@@ -15,8 +15,12 @@ def current_async_library():
 
     The following libraries are currently supported:
 
-    * Trio (``"trio"``)
-    * asyncio (``"asyncio"``)
+    ===========   ===========  =============
+    Library       Requires     Magic string
+    ===========   ===========  =============
+    **Trio**      Trio v0.6+   ``"trio"``
+    **asyncio**                ``"asyncio"``
+    ===========   ===========  =============
 
     Returns:
       A string like ``"trio"``.
