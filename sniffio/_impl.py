@@ -61,7 +61,7 @@ def current_async_library():
                 if (3, 7) <= sys.version_info:
                     # asyncio has contextvars support, and we're in a task, so
                     # we can safely cache the sniffed value
-                    value.set("asyncio")
+                    current_async_library_cvar.set("asyncio")
                 return "asyncio"
         except RuntimeError:
             pass
