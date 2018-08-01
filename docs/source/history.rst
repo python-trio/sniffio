@@ -5,7 +5,7 @@ Release history
 
 .. towncrier release notes start
 
-sniffio 1.0.0 (2018-07-28)
+sniffio 1.0.0 (2018-07-31)
 --------------------------
 
 Initial release.
