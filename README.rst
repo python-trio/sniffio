@@ -69,4 +69,4 @@ Quickstart
    asyncio.run(print_library())
 
 For more details, including how to add support to new async libraries,
-`please peruse our find manual <https://sniffio.readthedocs.io>`__.
+`please peruse our fine manual <https://sniffio.readthedocs.io>`__.
