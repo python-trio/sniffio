@@ -9,6 +9,10 @@
 .. image:: https://img.shields.io/pypi/v/sniffio.svg
    :target: https://pypi.org/project/sniffio
    :alt: Latest PyPi version
+   
+.. image:: https://img.shields.io/conda/vn/conda-forge/sniffio.svg
+   :target: https://anaconda.org/conda-forge/sniffio 
+   :alt: Latest conda-forge version   
 
 .. image:: https://travis-ci.org/python-trio/sniffio.svg?branch=master
    :target: https://travis-ci.org/python-trio/sniffio
