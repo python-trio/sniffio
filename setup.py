@@ -22,6 +22,7 @@ setup(
     ],
     extras_require={":python_version < '3.7'": ["contextvars>=2.1"]},
     python_requires=">=3.5",
+    tests_require=['curio'],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "License :: OSI Approved :: Apache Software License",
