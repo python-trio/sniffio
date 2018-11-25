@@ -14,6 +14,7 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     sudo $PYTHON_EXE -m pip install virtualenv
     $PYTHON_EXE -m virtualenv testenv
     source testenv/bin/activate
+    https://github.com/dabeaz/curio
 fi
 
 if [ "$USE_PYPY_NIGHTLY" = "1" ]; then

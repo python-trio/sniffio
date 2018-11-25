@@ -19,6 +19,7 @@ def current_async_library():
     Library             Requires     Magic string
     ================   ===========  ============================
     **Trio**            Trio v0.6+   ``"trio"``
+    **Curio**           -            ``"curio"``
     **asyncio**                      ``"asyncio"``
     **Trio-asyncio**    v0.8.2+     ``"trio"`` or ``"asyncio"``,
                                     depending on current mode
@@ -53,6 +54,13 @@ def current_async_library():
     value = current_async_library_cvar.get()
     if value is not None:
         return value
+
+    # Sniff for curio (for now)
+    if 'curio' in sys.modules:
+        from curio.meta import curio_running
+        if curio_running():
+            return 'curio'
+
     # Need to sniff for asyncio
     if "asyncio" in sys.modules:
         import asyncio
