@@ -54,7 +54,7 @@ if [ "$USE_PYPY_RELEASE_VERSION" != "" ]; then
     source testenv/bin/activate
 fi
 
-pip install -U pip setuptools wheel https://github.com/dabeaz/curio/tarball/master
+pip install -U pip setuptools wheel
 
 if [ "$CHECK_FORMATTING" = "1" ]; then
     pip install yapf==${YAPF_VERSION}
