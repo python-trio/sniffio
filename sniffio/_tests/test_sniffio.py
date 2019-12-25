@@ -62,3 +62,26 @@ def test_curio():
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
+
+
+def test_twisted():
+    from twisted.internet import reactor
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+    ran = []
+
+    def this_is_twisted():
+        try:
+            assert current_async_library() == "twisted"
+            ran.append(True)
+        finally:
+            reactor.stop()
+
+    reactor.callWhenRunning(this_is_twisted)
+    reactor.run()
+    assert ran == [True]
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()

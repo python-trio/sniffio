@@ -77,6 +77,18 @@ def current_async_library():
                 return "asyncio"
         except RuntimeError:
             pass
+
+    if "twisted.internet" in sys.modules:
+        from traceback import walk_stack
+        from twisted.internet import reactor
+
+        # Check if the reactor is running in this thread
+        if reactor.running:
+            for frame, lineno in walk_stack(sys._getframe(2)):
+                if frame.f_code.co_name == 'run':
+                    if frame.f_code.co_filename.endswith('twisted/internet/base.py'):
+                        return "twisted"
+
     raise AsyncLibraryNotFoundError(
         "unknown async library, or not in async context"
     )
