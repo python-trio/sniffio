@@ -86,7 +86,8 @@ def current_async_library():
         if reactor.running:
             for frame, lineno in walk_stack(sys._getframe(2)):
                 if frame.f_code.co_name == 'run':
-                    if frame.f_code.co_filename.endswith('twisted/internet/base.py'):
+                    if frame.f_code.co_filename.endswith(
+                            'twisted/internet/base.py'):
                         return "twisted"
 
     raise AsyncLibraryNotFoundError(
