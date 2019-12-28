@@ -1,3 +1,5 @@
+import warnings
+
 import pytest
 
 from .. import (
@@ -65,7 +67,9 @@ def test_curio():
 
 
 def test_twisted():
-    from twisted.internet import reactor
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from twisted.internet import reactor
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
