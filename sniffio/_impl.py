@@ -55,6 +55,13 @@ def current_async_library():
     if value is not None:
         return value
 
+    # Sniff for Twisted
+    if 'twisted' in sys.modules:
+        from twisted.internet import reactor
+        from twisted.python.threadable import isInIOThread
+        if reactor.running and isInIOThread():
+            return "twisted"
+
     # Sniff for curio (for now)
     if 'curio' in sys.modules:
         from curio.meta import curio_running
@@ -77,18 +84,6 @@ def current_async_library():
                 return "asyncio"
         except RuntimeError:
             pass
-
-    if "twisted.internet" in sys.modules:
-        from traceback import walk_stack
-        from twisted.internet import reactor
-
-        # Check if the reactor is running in this thread
-        if reactor.running:
-            for frame, lineno in walk_stack(sys._getframe(2)):
-                if frame.f_code.co_name == 'run':
-                    if frame.f_code.co_filename.endswith(
-                            'twisted/internet/base.py'):
-                        return "twisted"
 
     raise AsyncLibraryNotFoundError(
         "unknown async library, or not in async context"
