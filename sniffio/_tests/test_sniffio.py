@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 
 from .. import (
@@ -43,6 +45,7 @@ def test_asyncio():
         current_async_library()
 
 
+@pytest.mark.skipif(sys.version_info < (3, 6), reason='Curio requires 3.6+')
 def test_curio():
     import curio
 
