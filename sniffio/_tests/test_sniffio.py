@@ -95,14 +95,17 @@ def test_twisted(reactor):
 
     ran = []
 
-    def this_is_twisted():
+    async def this_is_twisted():
         try:
             assert current_async_library() == "twisted"
             ran.append(True)
         finally:
             reactor.stop()
 
-    reactor.callWhenRunning(this_is_twisted)
+    import twisted.internet.defer
+    reactor.callWhenRunning(
+        lambda: twisted.internet.defer.ensureDeferred(this_is_twisted()),
+    )
     reactor.run()
     assert ran == [True]
 

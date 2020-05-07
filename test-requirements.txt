@@ -1,4 +1,4 @@
 pytest
 pytest-cov
 curio
-twisted
+git+https://github.com/altendky/twisted@9815-altendky-sniffio
