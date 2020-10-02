@@ -66,9 +66,9 @@ def current_async_library() -> str:
     if "asyncio" in sys.modules:
         import asyncio
         try:
-            current_task = asyncio.current_task
+            current_task = asyncio.current_task  # type: ignore[attr-defined]
         except AttributeError:
-            current_task = asyncio.Task.current_task
+            current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
         try:
             if current_task() is not None:
                 if (3, 7) <= sys.version_info:

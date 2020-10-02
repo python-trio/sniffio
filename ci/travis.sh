@@ -2,6 +2,7 @@
 
 set -ex
 
+MYPY_VERSION=0.782
 YAPF_VERSION=0.22.0
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
@@ -74,6 +75,19 @@ in your local checkout.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 EOF
         exit 1
+    fi
+    pip install mypy==${MYPY_VERSION}
+    if ! mypy --pretty sniffio; then
+      cat <<EOF
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Type checking problems were found (listed above).
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+EOF
+      exit 1
     fi
     exit 0
 fi
