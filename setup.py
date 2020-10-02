@@ -14,6 +14,7 @@ setup(
     author_email="njs@pobox.com",
     license="MIT -or- Apache License 2.0",
     packages=find_packages(),
+    package_data={"sniffio": ["py.typed"]},
     install_requires=[],
     keywords=[
         "async",

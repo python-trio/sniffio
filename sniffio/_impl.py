@@ -1,16 +1,17 @@
 from contextvars import ContextVar
+from typing import Optional
 import sys
 
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
-)
+)  # type: ContextVar[Optional[str]]
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
     pass
 
 
-def current_async_library():
+def current_async_library() -> str:
     """Detect which async library is currently running.
 
     The following libraries are currently supported:
