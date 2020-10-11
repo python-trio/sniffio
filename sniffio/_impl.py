@@ -1,16 +1,17 @@
 from contextvars import ContextVar
+from typing import Optional
 import sys
 
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
-)
+)  # type: ContextVar[Optional[str]]
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
     pass
 
 
-def current_async_library():
+def current_async_library() -> str:
     """Detect which async library is currently running.
 
     The following libraries are currently supported:
@@ -65,9 +66,9 @@ def current_async_library():
     if "asyncio" in sys.modules:
         import asyncio
         try:
-            current_task = asyncio.current_task
+            current_task = asyncio.current_task  # type: ignore[attr-defined]
         except AttributeError:
-            current_task = asyncio.Task.current_task
+            current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
         try:
             if current_task() is not None:
                 if (3, 7) <= sys.version_info:
