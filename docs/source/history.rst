@@ -5,7 +5,16 @@ Release history
 
 .. towncrier release notes start
 
-Sniffio 1.1.0 (2019-04-19)
+sniffio 1.2.0 (2020-10-11)
+--------------------------
+
+Features
+~~~~~~~~
+
+- Include type hints (`#17 <https://github.com/python-trio/sniffio/pull/17>`__)
+
+
+sniffio 1.1.0 (2019-04-19)
 --------------------------
 
 Features
