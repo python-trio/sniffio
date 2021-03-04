@@ -56,12 +56,6 @@ def current_async_library() -> str:
     if value is not None:
         return value
 
-    # Sniff for curio (for now)
-    if 'curio' in sys.modules:
-        from curio.meta import curio_running
-        if curio_running():
-            return 'curio'
-
     # Need to sniff for asyncio
     if "asyncio" in sys.modules:
         import asyncio
@@ -78,6 +72,13 @@ def current_async_library() -> str:
                 return "asyncio"
         except RuntimeError:
             pass
+
+    # Sniff for curio (for now)
+    if 'curio' in sys.modules:
+        from curio.meta import curio_running
+        if curio_running():
+            return 'curio'
+
     raise AsyncLibraryNotFoundError(
         "unknown async library, or not in async context"
     )
