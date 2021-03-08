@@ -1,8 +1,8 @@
 from contextvars import ContextVar
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 import sys
 
-if sys.version_info >= (3, 7):
+if TYPE_CHECKING or sys.version_info >= (3, 7):
     import threading
 else:
     try:
