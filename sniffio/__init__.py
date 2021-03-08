@@ -11,4 +11,5 @@ from ._impl import (
     current_async_library,
     AsyncLibraryNotFoundError,
     current_async_library_cvar,
+    current_async_library_tlocal,
 )

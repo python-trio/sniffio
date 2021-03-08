@@ -4,11 +4,11 @@ import pytest
 
 from .. import (
     current_async_library, AsyncLibraryNotFoundError,
-    current_async_library_cvar
+    current_async_library_cvar, current_async_library_tlocal
 )
 
 
-def test_basics():
+def test_basics_cvar():
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
 
@@ -17,6 +17,22 @@ def test_basics():
         assert current_async_library() == "generic-lib"
     finally:
         current_async_library_cvar.reset(token)
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+
+def test_basics_tlocal():
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+    old_name, current_async_library_tlocal.name = (
+        current_async_library_tlocal.name, "generic-lib"
+    )
+    try:
+        assert current_async_library() == "generic-lib"
+    finally:
+        current_async_library_tlocal.name = old_name
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()

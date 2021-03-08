@@ -2,9 +2,24 @@ from contextvars import ContextVar
 from typing import Optional
 import sys
 
+if sys.version_info >= (3, 7):
+    import threading
+else:
+    try:
+        import threading
+    except ImportError:
+        import dummy_threading as threading
+
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
 )  # type: ContextVar[Optional[str]]
+
+
+class _CurrentAsyncLibraryTLocal(threading.local):
+    name = None  # type: Optional[str]
+
+
+current_async_library_tlocal = _CurrentAsyncLibraryTLocal()
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
@@ -52,6 +67,10 @@ def current_async_library() -> str:
                    raise RuntimeError(f"Unsupported library {library!r}")
 
     """
+    value = current_async_library_tlocal.name
+    if value is not None:
+        return value
+
     value = current_async_library_cvar.get()
     if value is not None:
         return value
