@@ -7,7 +7,7 @@ if TYPE_CHECKING or sys.version_info >= (3, 7):
 else:
     try:
         import threading
-    except ImportError:
+    except ImportError:  # pragma: no cover
         import dummy_threading as threading  # pragma: no cover
 
 current_async_library_cvar = ContextVar(
