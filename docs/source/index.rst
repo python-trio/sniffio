@@ -67,7 +67,7 @@ that this is set to your identifier string. In most cases, this will be as simpl
 
    # Your library's step function
    def step(...):
-        current_async_library_tlocal.name, old_name = (
+        old_name, current_async_library_tlocal.name = (
             current_async_library_tlocal.name,
             "my-library's-PyPI-name",
          )
