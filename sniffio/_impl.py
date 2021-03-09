@@ -19,7 +19,7 @@ class _CurrentAsyncLibraryTLocal(threading.local):
     name = None  # type: Optional[str]
 
 
-current_async_library_tlocal = _CurrentAsyncLibraryTLocal()
+thread_local = _CurrentAsyncLibraryTLocal()
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
@@ -67,7 +67,7 @@ def current_async_library() -> str:
                    raise RuntimeError(f"Unsupported library {library!r}")
 
     """
-    value = current_async_library_tlocal.name
+    value = thread_local.name
     if value is not None:
         return value
 

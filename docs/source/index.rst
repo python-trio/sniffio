@@ -56,25 +56,22 @@ avoid collisions, this should match your library's name on PyPI.
 
 **Step 2:** There's a special :class:`threading.local` object:
 
-.. data:: current_async_library_tlocal.name
+.. data:: thread_local.name
 
 Make sure that whenever your library is calling a coroutine throw(), send(), or close()
 that this is set to your identifier string. In most cases, this will be as simple as:
 
 .. code-block:: python3
 
-   from sniffio import current_async_library_tlocal
+   from sniffio import thread_local
 
    # Your library's step function
    def step(...):
-        old_name, current_async_library_tlocal.name = (
-            current_async_library_tlocal.name,
-            "my-library's-PyPI-name",
-         )
+        old_name, thread_local.name = thread_local.name, "my-library's-PyPI-name"
         try:
             result = coro.send(None)
         finally:
-            current_async_library_tlocal.name = old_name
+            thread_local.name = old_name
 
 **Step 3:** Send us a PR to add your library to the list of supported
 libraries above.
