@@ -8,7 +8,7 @@ else:
     try:
         import threading
     except ImportError:
-        import dummy_threading as threading
+        import dummy_threading as threading  # pragma: no cover
 
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
