@@ -15,11 +15,11 @@ current_async_library_cvar = ContextVar(
 )  # type: ContextVar[Optional[str]]
 
 
-class _CurrentAsyncLibraryTLocal(threading.local):
+class _ThreadLocal(threading.local):
     name = None  # type: Optional[str]
 
 
-thread_local = _CurrentAsyncLibraryTLocal()
+thread_local = _ThreadLocal()
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
