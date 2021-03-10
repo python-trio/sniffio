@@ -1,14 +1,7 @@
 from contextvars import ContextVar
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 import sys
-
-if TYPE_CHECKING or sys.version_info >= (3, 7):
-    import threading
-else:
-    try:
-        import threading
-    except ImportError:  # pragma: no cover
-        import dummy_threading as threading  # pragma: no cover
+import threading
 
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
