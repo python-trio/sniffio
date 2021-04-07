@@ -9,6 +9,9 @@ current_async_library_cvar = ContextVar(
 
 
 class _ThreadLocal(threading.local):
+    # Since threading.local provides no explicit mechanism is for setting
+    # a default for a value, a custom class with a class attribute is used
+    # instead.
     name = None  # type: Optional[str]
 
 
