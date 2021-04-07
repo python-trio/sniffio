@@ -52,7 +52,7 @@ If you'd like your library to be detected by ``sniffio``, it's pretty
 easy.
 
 **Step 1:** Pick the magic string that will identify your library. To
-avoid collisions, this should match your library's name on PyPI.
+avoid collisions, this should match your library's PEP 503 normalized name on PyPI.
 
 **Step 2:** There's a special :class:`threading.local` object:
 
