@@ -58,7 +58,7 @@ avoid collisions, this should match your library's name on PyPI.
 
 .. data:: thread_local.name
 
-Make sure that whenever your library is calling a coroutine throw(), send(), or close()
+Make sure that whenever your library is calling a coroutine ``throw()``, ``send()``, or ``close()``
 that this is set to your identifier string. In most cases, this will be as simple as:
 
 .. code-block:: python3
