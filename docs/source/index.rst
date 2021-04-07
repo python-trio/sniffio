@@ -78,6 +78,28 @@ libraries above.
 
 That's it!
 
+There are libraries that directly drive a sniffio-naive coroutine from another,
+outer sniffio-aware coroutine such as `trio_asyncio`.
+These libraries should make sure to set the correct value
+while calling a synchronous function that will go on to drive the
+sniffio-naive coroutine.
+
+
+.. code-block:: python3
+
+   from sniffio import thread_local
+
+   # Your library's compatibility loop
+   async def main_loop(self, ...) -> None:
+        ...
+        handle: asyncio.Handle = await self.get_next_handle()
+        old_name, thread_local.name = thread_local.name, "asyncio"
+        try:
+            result = handle._callback(obj._args)
+        finally:
+            thread_local.name = old_name
+
+
 .. toctree::
    :maxdepth: 1
 
