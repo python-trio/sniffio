@@ -35,6 +35,8 @@ def current_async_library() -> str:
     **asyncio**                      ``"asyncio"``
     **Trio-asyncio**    v0.8.2+     ``"trio"`` or ``"asyncio"``,
                                     depending on current mode
+    **Twisted**         v?+          ``"twisted"`` or ``"asyncio"``,
+                                    depending on current mode
     ================   ===========  ============================
 
     Returns:
