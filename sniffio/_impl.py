@@ -1,10 +1,21 @@
 from contextvars import ContextVar
 from typing import Optional
 import sys
+import threading
 
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
 )  # type: ContextVar[Optional[str]]
+
+
+class _ThreadLocal(threading.local):
+    # Since threading.local provides no explicit mechanism is for setting
+    # a default for a value, a custom class with a class attribute is used
+    # instead.
+    name = None  # type: Optional[str]
+
+
+thread_local = _ThreadLocal()
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
@@ -52,6 +63,10 @@ def current_async_library() -> str:
                    raise RuntimeError(f"Unsupported library {library!r}")
 
     """
+    value = thread_local.name
+    if value is not None:
+        return value
+
     value = current_async_library_cvar.get()
     if value is not None:
         return value
