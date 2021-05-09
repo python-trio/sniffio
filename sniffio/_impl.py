@@ -80,6 +80,10 @@ def current_async_library() -> str:
             current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
         try:
             if current_task() is not None:
+                if sys.version_info <= (3, 7):
+                    # asyncio has contextvars support, and we're in a task, so
+                    # we can safely cache the sniffed value
+                    current_async_library_cvar.set("asyncio")
                 return "asyncio"
         except RuntimeError:
             pass
