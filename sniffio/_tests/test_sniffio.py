@@ -8,6 +8,11 @@ from .. import (
 )
 
 
+@pytest.fixture(autouse=True)
+def reset_current_async_library_cvar():
+    current_async_library_cvar.set(None)
+
+
 def test_basics_cvar():
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
@@ -55,8 +60,7 @@ def test_asyncio():
     assert ran == [True]
     loop.close()
 
-    with pytest.raises(AsyncLibraryNotFoundError):
-        current_async_library()
+    current_async_library()
 
 
 @pytest.mark.skipif(sys.version_info < (3, 6), reason='Curio requires 3.6+')
