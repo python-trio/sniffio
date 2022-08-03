@@ -79,3 +79,16 @@ def test_curio():
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
+
+
+def test_asyncio_in_curio():
+    import curio
+    import asyncio
+
+    async def this_is_asyncio():
+        return current_async_library()
+
+    async def this_is_curio():
+        return current_async_library(), asyncio.run(this_is_asyncio())
+
+    assert curio.run(this_is_curio) == ("curio", "asyncio")

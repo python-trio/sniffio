@@ -15,13 +15,12 @@ setup(
     license="MIT -or- Apache License 2.0",
     packages=find_packages(),
     package_data={"sniffio": ["py.typed"]},
-    install_requires=["contextvars >= 2.1; python_version < '3.7'"],
     keywords=[
         "async",
         "trio",
         "asyncio",
     ],
-    python_requires=">=3.5",
+    python_requires=">=3.7",
     tests_require=['curio'],
     classifiers=[
         "License :: OSI Approved :: MIT License",
