@@ -70,7 +70,7 @@ _NO_HOOK = object()
 hooks = {
     # could be trio-asyncio or trio-guest mode
     # once trio and trio-asyncio and sniffio align trio should set
-    # sniffio.hooks['trio'] = detect_trio()
+    # sniffio.hooks['trio'] = detect_trio
     "trio": _guessed_mode,
     # pre-cache some well-known well behaved asyncgen_finalizer modules
     # and so it saves a trip around _is_asyncio(finalizer) when we
