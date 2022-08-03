@@ -153,7 +153,7 @@ def _is_asyncio(finalizer):
     if "asyncio" in sys.modules:
         import asyncio
         try:
-            return finalizer is asyncio.get_running_loop()._asyncgen_finalizer_hook
+            return finalizer == asyncio.get_running_loop()._asyncgen_finalizer_hook
         except RuntimeError:
             return False
     return False

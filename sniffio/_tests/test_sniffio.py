@@ -59,6 +59,29 @@ def test_asyncio():
         current_async_library()
 
 
+def test_uvloop():
+    import uvloop
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+    ran = []
+
+    async def this_is_asyncio():
+        assert current_async_library() == "asyncio"
+        # Call it a second time to exercise the caching logic
+        assert current_async_library() == "asyncio"
+        ran.append(True)
+
+    loop = uvloop.new_event_loop()
+    loop.run_until_complete(this_is_asyncio())
+    assert ran == [True]
+    loop.close()
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+
 @pytest.mark.skipif(sys.version_info < (3, 6), reason='Curio requires 3.6+')
 def test_curio():
     import curio
