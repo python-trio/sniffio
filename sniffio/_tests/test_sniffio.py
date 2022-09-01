@@ -1,3 +1,4 @@
+import os
 import sys
 
 import pytest
@@ -50,10 +51,8 @@ def test_asyncio():
         assert current_async_library() == "asyncio"
         ran.append(True)
 
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(this_is_asyncio())
+    asyncio.run(this_is_asyncio())
     assert ran == [True]
-    loop.close()
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
@@ -76,13 +75,16 @@ def test_uvloop():
     loop = uvloop.new_event_loop()
     loop.run_until_complete(this_is_asyncio())
     assert ran == [True]
-    loop.close()
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
 
 
-@pytest.mark.skipif(sys.version_info < (3, 6), reason='Curio requires 3.6+')
+# https://github.com/dabeaz/curio/pull/354
+@pytest.mark.skipif(
+    os.name == "nt" and sys.version_info >= (3, 9),
+    reason="Curio breaks on Python 3.9+ on Windows. Fix was not released yet",
+)
 def test_curio():
     import curio
 
