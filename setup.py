@@ -12,7 +12,7 @@ setup(
     long_description=LONG_DESC,
     author="Nathaniel J. Smith",
     author_email="njs@pobox.com",
-    license="MIT -or- Apache License 2.0",
+    license="MIT OR Apache-2.0",
     packages=find_packages(),
     package_data={"sniffio": ["py.typed"]},
     install_requires=["contextvars >= 2.1; python_version < '3.7'"],
