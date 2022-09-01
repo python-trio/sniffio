@@ -21,7 +21,7 @@ setup(
         "trio",
         "asyncio",
     ],
-    python_requires=">=3.5",
+    python_requires=">=3.7",
     tests_require=['curio'],
     classifiers=[
         "License :: OSI Approved :: MIT License",
