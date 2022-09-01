@@ -15,7 +15,6 @@ setup(
     license="MIT OR Apache-2.0",
     packages=find_packages(),
     package_data={"sniffio": ["py.typed"]},
-    install_requires=["contextvars >= 2.1; python_version < '3.7'"],
     keywords=[
         "async",
         "trio",
