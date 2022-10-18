@@ -1,5 +1,5 @@
 # Add any project-specific files here:
-
+sniffio/_version.py
 
 # Sphinx docs
 docs/build/

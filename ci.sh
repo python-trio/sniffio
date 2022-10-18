@@ -43,8 +43,8 @@ EOF
     exit 0
 fi
 
-python setup.py sdist --formats=zip
-pip install dist/*.zip
+python -m build -nsx .
+pip install dist/*.tar.gz
 
 # Actual tests
 pip install -Ur test-requirements.txt
