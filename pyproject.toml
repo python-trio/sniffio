@@ -1,6 +1,43 @@
 [build-system]
-requires = ["setuptools>=42.2", "setuptools_scm[toml]>=3.4.3"]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=3.4.3"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "sniffio"
+authors = [{name = "Nathaniel J. Smith", email = "njs@pobox.com"}]
+license = {text = "MIT OR Apache-2.0"}
+description = "Sniff out which async library your code is running under"
+readme = "README.rst"
+keywords = ["async", "trio", "asyncio"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+    "Framework :: Trio",
+    "Framework :: AsyncIO",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Intended Audience :: Developers",
+    "Development Status :: 5 - Production/Stable",
+]
+urls = {Homepage = "https://github.com/python-trio/sniffio"}
+requires-python = ">=3.7"
+dynamic = ["version"]
+
+[project.optional-dependencies]
+testing = ["curio"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages]
+find = {namespaces = false}
+
+[tool.setuptools.package-data]
+sniffio = ["py.typed"]
 
 [tool.setuptools_scm]
 write_to = "sniffio/_version.py"
