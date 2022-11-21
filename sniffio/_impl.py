@@ -77,7 +77,9 @@ def current_async_library() -> str:
         try:
             asyncio.get_running_loop()
             return "asyncio"
-        except (AttributeError, RuntimeError):
+        except AttributeError:
+            pass
+        except RuntimeError:
             pass
 
         try:

@@ -62,9 +62,8 @@ def test_in_call_soon_threadsafe():
     import asyncio
 
     asynclib = None
-    completed = asyncio.Event()
 
-    def sync_in_loop():
+    def sync_in_loop(completed):
         nonlocal asynclib
         try:
             asynclib = current_async_library()
@@ -72,10 +71,11 @@ def test_in_call_soon_threadsafe():
             completed.set()
 
     async def async_in_loop():
+        completed = asyncio.Event()
+        loop.call_soon_threadsafe(sync_in_loop, completed)
         await completed.wait()
 
     loop = asyncio.new_event_loop()
-    handle = loop.call_soon_threadsafe(sync_in_loop)
     loop.run_until_complete(async_in_loop())
     loop.close()
 
