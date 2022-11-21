@@ -75,6 +75,12 @@ def current_async_library() -> str:
     if "asyncio" in sys.modules:
         import asyncio
         try:
+            asyncio.get_running_loop()
+            return "asyncio"
+        except (AttributeError, RuntimeError):
+            pass
+
+        try:
             current_task = asyncio.current_task  # type: ignore[attr-defined]
         except AttributeError:
             current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
