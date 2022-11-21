@@ -58,6 +58,30 @@ def test_asyncio():
         current_async_library()
 
 
+def test_in_call_soon_threadsafe():
+    import asyncio
+
+    asynclib = None
+    completed = asyncio.Event()
+
+    def sync_in_loop():
+        nonlocal asynclib
+        try:
+            asynclib = current_async_library()
+        finally:
+            completed.set()
+
+    async def async_in_loop():
+        await completed.wait()
+
+    loop = asyncio.new_event_loop()
+    handle = loop.call_soon_threadsafe(sync_in_loop)
+    loop.run_until_complete(async_in_loop())
+    loop.close()
+
+    assert asynclib == 'asyncio'
+
+
 # https://github.com/dabeaz/curio/pull/354
 @pytest.mark.skipif(
     os.name == "nt" and sys.version_info >= (3, 9),
