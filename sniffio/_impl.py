@@ -77,20 +77,21 @@ def current_async_library() -> str:
         try:
             asyncio.get_running_loop()
             return "asyncio"
+
         except AttributeError:
-            pass
+            try:
+                current_task = asyncio.current_task  # type: ignore[attr-defined]
+            except AttributeError:
+                current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
+            try:
+                if current_task() is not None:
+                    return "asyncio"
+            except RuntimeError:
+                pass
+
         except RuntimeError:
             pass
 
-        try:
-            current_task = asyncio.current_task  # type: ignore[attr-defined]
-        except AttributeError:
-            current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
-        try:
-            if current_task() is not None:
-                return "asyncio"
-        except RuntimeError:
-            pass
 
     # Sniff for curio (for now)
     if 'curio' in sys.modules:
