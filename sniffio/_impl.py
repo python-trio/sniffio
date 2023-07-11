@@ -1,5 +1,5 @@
 from contextvars import ContextVar
-from typing import Optional
+from typing import Callable, Optional
 import sys
 import threading
 
@@ -36,6 +36,23 @@ def current_async_library() -> str:
     **Trio-asyncio**    v0.8.2+     ``"trio"`` or ``"asyncio"``,
                                     depending on current mode
     ================   ===========  ============================
+
+    If :func:`current_async_library` returns ``"someio"``, then that
+    generally means you can ``await someio.sleep(0)`` if you're in an
+    async function, and you can access ``someio``\\'s global state (to
+    start background tasks, determine the current time, etc) even if you're
+    not in an async function.
+
+    .. note:: Situations such as `guest mode
+       <https://trio.readthedocs.io/en/stable/reference-lowlevel.html#using-guest-mode-to-run-trio-on-top-of-other-event-loops>`__
+       and `trio-asyncio <https://trio-asyncio.readthedocs.io/en/latest/>`__
+       can result in more than one async library being "running" in the same
+       thread at the same time. In such ambiguous cases, `sniffio`
+       returns the name of the library that has most directly invoked its
+       caller. Within an async task, if :func:`current_async_library`
+       returns ``"someio"`` then that means you can ``await someio.sleep(0)``.
+       Outside of a task, you will get ``"asyncio"`` in asyncio callbacks,
+       ``"trio"`` in trio instruments and abort handlers, etc.
 
     Returns:
       A string like ``"trio"``.
@@ -74,15 +91,8 @@ def current_async_library() -> str:
     # Need to sniff for asyncio
     if "asyncio" in sys.modules:
         import asyncio
-        try:
-            current_task = asyncio.current_task  # type: ignore[attr-defined]
-        except AttributeError:
-            current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
-        try:
-            if current_task() is not None:
-                return "asyncio"
-        except RuntimeError:
-            pass
+        if asyncio._get_running_loop() is not None:
+            return "asyncio"
 
     # Sniff for curio (for now)
     if 'curio' in sys.modules:

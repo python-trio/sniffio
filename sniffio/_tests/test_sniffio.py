@@ -45,23 +45,29 @@ def test_asyncio():
 
     ran = []
 
+    def test_from_callback():
+        assert current_async_library() == "asyncio"
+        ran.append(2)
+
     async def this_is_asyncio():
+        asyncio.get_running_loop().call_soon(test_from_callback)
         assert current_async_library() == "asyncio"
-        # Call it a second time to exercise the caching logic
-        assert current_async_library() == "asyncio"
-        ran.append(True)
+        ran.append(1)
 
     asyncio.run(this_is_asyncio())
-    assert ran == [True]
+    assert ran == [1, 2]
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
 
 
-# https://github.com/dabeaz/curio/pull/354
+# https://github.com/dabeaz/curio/pull/354 has the Windows/3.9 fix.
+# 3.12 error is from importing a private name that no longer exists in the
+# multiprocessing module; unclear if it's going to be fixed or not.
 @pytest.mark.skipif(
-    os.name == "nt" and sys.version_info >= (3, 9),
-    reason="Curio breaks on Python 3.9+ on Windows. Fix was not released yet",
+    (os.name == "nt" and sys.version_info >= (3, 9))
+    or sys.version_info >= (3, 12),
+    reason="Curio breaks on Python 3.9+ on Windows and 3.12+ everywhere",
 )
 def test_curio():
     import curio
@@ -72,8 +78,6 @@ def test_curio():
     ran = []
 
     async def this_is_curio():
-        assert current_async_library() == "curio"
-        # Call it a second time to exercise the caching logic
         assert current_async_library() == "curio"
         ran.append(True)
 
