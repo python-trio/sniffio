@@ -91,19 +91,8 @@ def current_async_library() -> str:
     # Need to sniff for asyncio
     if "asyncio" in sys.modules:
         import asyncio
-        try:
-            test: Callable[
-                [], object
-            ] = asyncio._get_running_loop  # type: ignore[attr-defined]
-        except AttributeError:
-            # 3.6 doesn't have _get_running_loop, so we can only detect
-            # asyncio if we're inside a task (as opposed to a callback)
-            test = asyncio.Task.current_task  # type: ignore[attr-defined]
-        try:
-            if test() is not None:
-                return "asyncio"
-        except RuntimeError:
-            pass
+        if asyncio._get_running_loop() is not None:
+            return "asyncio"
 
     # Sniff for curio (for now)
     if 'curio' in sys.modules:

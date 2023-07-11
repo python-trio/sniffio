@@ -54,9 +54,10 @@ easy.
 **Step 1:** Pick the magic string that will identify your library. To
 avoid collisions, this should match your library's PEP 503 normalized name on PyPI.
 
-**Step 2:** There's a special :class:`threading.local` object:
+**Step 2:** There's a special :class:`threading.local` object attribute that
+sniffio consults to determine the currently running library:
 
-.. data:: thread_local.name
+.. data:: sniffio.thread_local.name
 
 Make sure that whenever your library is potentially executing user-provided code,
 this is set to your identifier string. In many cases, you can set it once when
@@ -64,15 +65,15 @@ your library starts up and restore it on shutdown:
 
 .. code-block:: python3
 
-   from sniffio import thread_local as sniffio_loop
+   from sniffio import thread_local as sniffio_library
 
    # Your library's run function (like trio.run() or asyncio.run())
    def run(...):
-       old_name, sniffio_loop.name = sniffio_loop.name, "my-library's-PyPI-name"
+       old_name, sniffio_library.name = sniffio_library.name, "my-library's-PyPI-name"
        try:
            # actual event loop implementation left as an exercise to the reader
        finally:
-           sniffio_loop.name = old_name
+           sniffio_library.name = old_name
 
 In unusual situations you may need to be more fine-grained about it:
 
@@ -87,25 +88,25 @@ In unusual situations you may need to be more fine-grained about it:
   than around an entire ``run()`` function.
 
 * If you're using something akin to `trio-asyncio
-  <https://trio-asyncio.readthedocs.io/en/latest/>`__ to implement one async
-  library on top of another, then you can set and restore :data:`thread_local.name`
-  around each task step (call to a coroutine object ``send()``, ``throw()``, or
-  ``close()`` method) into the 'inner' library. For example, trio-asyncio does
-  something like:
+  <https://trio-asyncio.readthedocs.io/en/latest/>`__ to implement one
+  async library on top of another, then you can set and restore
+  :data:`thread_local.name` around each synchronous call that might
+  execute user code on behalf of the 'inner' library.
+  For example, trio-asyncio does something like:
 
   .. code-block:: python3
 
-     from sniffio import thread_local as sniffio_loop
+     from sniffio import thread_local as sniffio_library
 
      # Your library's compatibility loop
      async def main_loop(self, ...) -> None:
          ...
          handle: asyncio.Handle = await self.get_next_handle()
-         old_name, sniffio_loop.name = sniffio_loop.name, "asyncio"
+         old_name, sniffio_library.name = sniffio_library.name, "asyncio"
          try:
              result = handle._callback(obj._args)
          finally:
-             sniffio_loop.name = old_name
+             sniffio_library.name = old_name
 
 **Step 3:** Send us a PR to add your library to the list of supported
 libraries above.

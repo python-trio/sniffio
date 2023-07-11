@@ -65,7 +65,8 @@ def test_asyncio():
 # 3.12 error is from importing a private name that no longer exists in the
 # multiprocessing module; unclear if it's going to be fixed or not.
 @pytest.mark.skipif(
-    (os.name == "nt" and sys.version_info >= (3, 9)) or sys.version_info >= (3, 12),
+    (os.name == "nt" and sys.version_info >= (3, 9))
+    or sys.version_info >= (3, 12),
     reason="Curio breaks on Python 3.9+ on Windows and 3.12+ everywhere",
 )
 def test_curio():
