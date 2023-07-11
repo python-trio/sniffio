@@ -1,5 +1,5 @@
 from contextvars import ContextVar
-from typing import Optional
+from typing import Callable, Optional
 import sys
 import threading
 
@@ -92,7 +92,9 @@ def current_async_library() -> str:
     if "asyncio" in sys.modules:
         import asyncio
         try:
-            test = asyncio._get_running_loop  # type: ignore[attr-defined]
+            test: Callable[
+                [], object
+            ] = asyncio._get_running_loop  # type: ignore[attr-defined]
         except AttributeError:
             # 3.6 doesn't have _get_running_loop, so we can only detect
             # asyncio if we're inside a task (as opposed to a callback)
