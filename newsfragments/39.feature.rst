@@ -1,0 +1,13 @@
+sniffio now attempts to return the expected library name when
+:func:`sniffio.current_async_library` is called from code that is
+associated with an async library but is not part of an async task.
+This includes asyncio ``call_soon()`` and ``call_later()`` callbacks, and
+Trio instrumentation and ``abort_fn`` handlers. (Previously, sniffio's
+behavior in these situations was inconsistent.) The sniffio
+documentation now explains more precisely which async library counts
+as "currently running" in ambiguous cases. Libraries other than
+asyncio may need updates to their sniffio integration in order to
+fully conform to the new semantics; the documentation includes an
+updated recipe. The new semantics also reduce the number of situations
+where updates to sniffio's internals are required, which should modestly
+improve the performance of libraries that interoperate with sniffio.
