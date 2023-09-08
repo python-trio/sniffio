@@ -13,7 +13,7 @@ setup(
     author="Nathaniel J. Smith",
     author_email="njs@pobox.com",
     license="MIT OR Apache-2.0",
-    packages=find_packages(),
+    packages=find_packages(exclude=["sniffio._tests*"]),
     package_data={"sniffio": ["py.typed"]},
     keywords=[
         "async",
