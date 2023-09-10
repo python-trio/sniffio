@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup python
         uses: actions/setup-python@v4
         with:
@@ -43,7 +43,7 @@ jobs:
             extra_name: ', check formatting'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup python
         uses: actions/setup-python@v4
         if: "!endsWith(matrix.python, '-dev')"
@@ -52,7 +52,7 @@ jobs:
           cache: pip
           cache-dependency-path: test-requirements.txt
       - name: Setup python (dev)
-        uses: deadsnakes/action@v2.1.1
+        uses: deadsnakes/action@v3.0.1
         if: endsWith(matrix.python, '-dev')
         with:
           python-version: '${{ matrix.python }}'
@@ -73,7 +73,7 @@ jobs:
         python: ['3.7', '3.8', '3.9', '3.10', '3.11']
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup python
         uses: actions/setup-python@v4
         with:
