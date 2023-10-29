@@ -1,16 +1,28 @@
 from contextvars import ContextVar
+from typing import Optional
 import sys
+import threading
 
 current_async_library_cvar = ContextVar(
     "current_async_library_cvar", default=None
-)
+)  # type: ContextVar[Optional[str]]
+
+
+class _ThreadLocal(threading.local):
+    # Since threading.local provides no explicit mechanism is for setting
+    # a default for a value, a custom class with a class attribute is used
+    # instead.
+    name = None  # type: Optional[str]
+
+
+thread_local = _ThreadLocal()
 
 
 class AsyncLibraryNotFoundError(RuntimeError):
     pass
 
 
-def current_async_library():
+def current_async_library() -> str:
     """Detect which async library is currently running.
 
     The following libraries are currently supported:
@@ -53,9 +65,26 @@ def current_async_library():
                    raise RuntimeError(f"Unsupported library {library!r}")
 
     """
+    value = thread_local.name
+    if value is not None:
+        return value
+
     value = current_async_library_cvar.get()
     if value is not None:
         return value
+
+    # Need to sniff for asyncio
+    if "asyncio" in sys.modules:
+        import asyncio
+        try:
+            current_task = asyncio.current_task  # type: ignore[attr-defined]
+        except AttributeError:
+            current_task = asyncio.Task.current_task  # type: ignore[attr-defined]
+        try:
+            if current_task() is not None:
+                return "asyncio"
+        except RuntimeError:
+            pass
 
     # Sniff for curio (for now)
     if 'curio' in sys.modules:
@@ -63,22 +92,6 @@ def current_async_library():
         if curio_running():
             return 'curio'
 
-    # Need to sniff for asyncio
-    if "asyncio" in sys.modules:
-        import asyncio
-        try:
-            current_task = asyncio.current_task
-        except AttributeError:
-            current_task = asyncio.Task.current_task
-        try:
-            if current_task() is not None:
-                if (3, 7) <= sys.version_info:
-                    # asyncio has contextvars support, and we're in a task, so
-                    # we can safely cache the sniffed value
-                    current_async_library_cvar.set("asyncio")
-                return "asyncio"
-        except RuntimeError:
-            pass
     raise AsyncLibraryNotFoundError(
         "unknown async library, or not in async context"
     )
