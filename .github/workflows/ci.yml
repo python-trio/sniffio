@@ -9,15 +9,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10']
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
           cache: pip
           cache-dependency-path: test-requirements.txt
       - name: Run tests
@@ -34,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10', '3.11-dev']
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12-dev']
         check_formatting: ['0']
         extra_name: ['']
         include:
@@ -43,16 +44,16 @@ jobs:
             extra_name: ', check formatting'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         if: "!endsWith(matrix.python, '-dev')"
         with:
           python-version: ${{ matrix.python }}
           cache: pip
           cache-dependency-path: test-requirements.txt
       - name: Setup python (dev)
-        uses: deadsnakes/action@v2.0.2
+        uses: deadsnakes/action@v3.0.1
         if: endsWith(matrix.python, '-dev')
         with:
           python-version: '${{ matrix.python }}'
@@ -70,14 +71,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10']
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
           cache: pip
           cache-dependency-path: test-requirements.txt
       - name: Run tests

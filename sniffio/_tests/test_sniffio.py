@@ -58,10 +58,10 @@ def test_asyncio():
         current_async_library()
 
 
-# https://github.com/dabeaz/curio/pull/354
 @pytest.mark.skipif(
-    os.name == "nt" and sys.version_info >= (3, 9),
-    reason="Curio breaks on Python 3.9+ on Windows. Fix was not released yet",
+    sys.version_info >= (3, 12),
+    reason=
+    "curio broken on 3.12 (https://github.com/python-trio/sniffio/pull/42)",
 )
 def test_curio():
     import curio
