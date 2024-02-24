@@ -1,10 +1,15 @@
 # https://docs.readthedocs.io/en/latest/yaml-config.html
+version: 2
+
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.8"
+
 formats:
   - htmlzip
   - epub
 
-requirements_file: ci/rtd-requirements.txt
-
 python:
-  version: 3
-  pip_install: True
+  install:
+    - requirements: ci/rtd-requirements.txt
