@@ -1,3 +1,37 @@
+[build-system]
+requires = [
+    "setuptools >= 64",
+    "setuptools_scm >= 6.4"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sniffio"
+description = "Sniff out which async library your code is running under"
+readme = "README.rst"
+authors = [{name = "Nathaniel J. Smith", email = "njs@pobox.com"}]
+license = {text = "MIT OR Apache-2.0"}
+keywords = ["async", "trio", "asyncio"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+    "Framework :: Trio",
+    "Framework :: AsyncIO",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Intended Audience :: Developers",
+    "Development Status :: 5 - Production/Stable",
+]
+requires-python = ">= 3.7"
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "sniffio._version.__version__"}
+
 [tool.towncrier]
 package = "sniffio"
 filename = "docs/source/history.rst"
