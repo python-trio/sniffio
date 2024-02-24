@@ -29,6 +29,11 @@ classifiers = [
 requires-python = ">= 3.7"
 dynamic = ["version"]
 
+[project.urls]
+Homepage = "https://github.com/python-trio/sniffio"
+Documentation = "https://sniffio.readthedocs.io/"
+Changelog = "https://sniffio.readthedocs.io/en/latest/history.html"
+
 [tool.setuptools.dynamic]
 version = {attr = "sniffio._version.__version__"}
 
