@@ -32,6 +32,10 @@ dynamic = ["version"]
 [tool.setuptools.dynamic]
 version = {attr = "sniffio._version.__version__"}
 
+[tool.setuptools.packages.find]
+include = ["sniffio*"]
+namespaces = false
+
 [tool.towncrier]
 package = "sniffio"
 filename = "docs/source/history.rst"
