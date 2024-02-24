@@ -1,0 +1,1 @@
+Added missing ``thread_local`` to ``sniffio.__all__``
