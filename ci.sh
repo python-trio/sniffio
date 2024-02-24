@@ -10,7 +10,7 @@ pip install -U pip setuptools wheel
 
 if [ "$CHECK_FORMATTING" = "1" ]; then
     pip install yapf==${YAPF_VERSION}
-    if ! yapf -rpd setup.py sniffio; then
+    if ! yapf -rpd sniffio; then
         cat <<EOF
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -18,7 +18,7 @@ if [ "$CHECK_FORMATTING" = "1" ]; then
 Formatting problems were found (listed above). To fix them, run
 
    pip install yapf==${YAPF_VERSION}
-   yapf -rpi setup.py sniffio
+   yapf -rpi sniffio
 
 in your local checkout.
 
@@ -43,8 +43,8 @@ EOF
     exit 0
 fi
 
-python setup.py sdist --formats=zip
-pip install dist/*.zip
+python -m build -nsx .
+pip install dist/*.tar.gz
 
 # Actual tests
 pip install -Ur test-requirements.txt
