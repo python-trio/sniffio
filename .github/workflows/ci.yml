@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   Windows:
@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
 
     steps:
       - name: Checkout
@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
         check_formatting: ['0']
         extra_name: ['']
         include:
@@ -53,7 +53,7 @@ jobs:
           cache: pip
           cache-dependency-path: test-requirements.txt
       - name: Setup Python (dev)
-        uses: deadsnakes/action@v3.0.1
+        uses: deadsnakes/action@v3.2.0
         if: endsWith(matrix.python, '-dev')
         with:
           python-version: '${{ matrix.python }}'
@@ -71,7 +71,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
     steps:
       - name: Checkout
         uses: actions/checkout@v6
