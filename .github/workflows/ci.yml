@@ -50,6 +50,7 @@ jobs:
         if: "!endsWith(matrix.python, '-dev')"
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
           cache: pip
           cache-dependency-path: test-requirements.txt
       - name: Setup Python (dev)
