@@ -83,6 +83,10 @@ jobs:
           allow-prereleases: true
           cache: pip
           cache-dependency-path: test-requirements.txt
+      - name: Set PYTHON_GIL
+        if: endsWith(matrix.python-version, 't')
+        run: |
+          echo "PYTHON_GIL=0" >> "$GITHUB_ENV"
       - name: Run tests
         run: ./ci.sh
         env:
