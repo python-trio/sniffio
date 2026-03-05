@@ -90,12 +90,12 @@ jobs:
   alls-green:
     if: always()
     needs:
-    - Windows
-    - Ubuntu
-    - macOS
+      - Windows
+      - Ubuntu
+      - macOS
     runs-on: ubuntu-latest
     steps:
-    - name: Decide whether all jobs succeeded or not
-      uses: re-actors/alls-green@release/v1
-      with:
-        jobs: ${{ toJSON(needs) }}
+      - name: Decide whether all jobs succeeded or not
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
