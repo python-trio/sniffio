@@ -89,6 +89,13 @@ def current_async_library() -> str:
         from curio.meta import curio_running
         if curio_running():
             return 'curio'
+    
+    # Sniff for Twisted
+    if 'twisted' in sys.modules:
+        from twisted.internet import reactor
+        from twisted.python.threadable import isInIOThread
+        if reactor.running and isInIOThread():
+            return "twisted"
 
     raise AsyncLibraryNotFoundError(
         "unknown async library, or not in async context"

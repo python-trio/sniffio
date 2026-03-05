@@ -1,5 +1,6 @@
 import os
 import sys
+import warnings
 
 import pytest
 
@@ -78,6 +79,49 @@ def test_curio():
         ran.append(True)
 
     curio.run(this_is_curio)
+    assert ran == [True]
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+
+@pytest.fixture(params=['select', 'asyncio'])
+def reactor(request):
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from twisted.internet import asyncioreactor, selectreactor
+
+    if request.param == 'asyncio':
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        asyncioreactor.install(loop)
+        yield
+        loop.close()
+    else:
+        selectreactor.install()
+        yield
+
+    del sys.modules['twisted.internet.reactor']
+
+
+def test_twisted(reactor):
+    from twisted.internet import reactor
+
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+
+    ran = []
+
+    def this_is_twisted():
+        try:
+            assert current_async_library() == "twisted"
+            ran.append(True)
+        finally:
+            reactor.stop()
+
+    reactor.callWhenRunning(this_is_twisted)
+    reactor.run()
     assert ran == [True]
 
     with pytest.raises(AsyncLibraryNotFoundError):
