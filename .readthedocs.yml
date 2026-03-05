@@ -13,3 +13,6 @@ formats:
 python:
   install:
     - requirements: ci/rtd-requirements.txt
+
+sphinx:
+  configuration: docs/source/conf.py
