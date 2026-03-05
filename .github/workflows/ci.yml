@@ -47,17 +47,11 @@ jobs:
         uses: actions/checkout@v6
       - name: Setup Python
         uses: actions/setup-python@v6
-        if: "!endsWith(matrix.python, '-dev')"
         with:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
           cache: pip
           cache-dependency-path: test-requirements.txt
-      - name: Setup Python (dev)
-        uses: deadsnakes/action@v3.2.0
-        if: endsWith(matrix.python, '-dev')
-        with:
-          python-version: '${{ matrix.python }}'
       - name: Run tests
         run: ./ci.sh
         env:
