@@ -6,9 +6,6 @@ build:
   tools:
     python: "3.8"
 
-sphinx:
-  configuration: docs/source/conf.py
-
 formats:
   - htmlzip
   - epub
