@@ -43,7 +43,7 @@ EOF
     exit 0
 fi
 
-pip install -U --group test .
+pip install --upgrade --group test .
 
 mkdir empty
 cd empty
