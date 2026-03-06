@@ -5,6 +5,15 @@ Release history
 
 .. towncrier release notes start
 
+Sniffio 1.3.1 (2024-02-26)
+--------------------------
+
+Bugfixes
+~~~~~~~~
+
+- Added missing ``thread_local`` to ``sniffio.__all__`` (`#44 <https://github.com/python-trio/sniffio/issues/44>`__)
+
+
 sniffio 1.3.0 (2022-09-01)
 --------------------------
 

@@ -10,7 +10,7 @@ pip install -U pip setuptools wheel
 
 if [ "$CHECK_FORMATTING" = "1" ]; then
     pip install yapf==${YAPF_VERSION}
-    if ! yapf -rpd setup.py sniffio; then
+    if ! yapf -rpd sniffio; then
         cat <<EOF
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -43,11 +43,7 @@ EOF
     exit 0
 fi
 
-python setup.py sdist --formats=zip
-pip install dist/*.zip
-
-# Actual tests
-pip install -Ur test-requirements.txt
+pip install --upgrade --group test .
 
 mkdir empty
 cd empty

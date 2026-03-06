@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   Windows:
@@ -9,17 +9,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10']
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
           cache: pip
-          cache-dependency-path: test-requirements.txt
+          cache-dependency-path: pyproject.toml
       - name: Run tests
         run: ./ci.sh
         shell: bash
@@ -34,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10', '3.11-dev']
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
         check_formatting: ['0']
         extra_name: ['']
         include:
@@ -43,19 +44,14 @@ jobs:
             extra_name: ', check formatting'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup python
-        uses: actions/setup-python@v2
-        if: "!endsWith(matrix.python, '-dev')"
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
           cache: pip
-          cache-dependency-path: test-requirements.txt
-      - name: Setup python (dev)
-        uses: deadsnakes/action@v2.0.2
-        if: endsWith(matrix.python, '-dev')
-        with:
-          python-version: '${{ matrix.python }}'
+          cache-dependency-path: pyproject.toml
       - name: Run tests
         run: ./ci.sh
         env:
@@ -70,18 +66,36 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10']
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
           cache: pip
-          cache-dependency-path: test-requirements.txt
+          cache-dependency-path: pyproject.toml
+      - name: Set PYTHON_GIL
+        if: endsWith(matrix.python-version, 't')
+        run: |
+          echo "PYTHON_GIL=0" >> "$GITHUB_ENV"
       - name: Run tests
         run: ./ci.sh
         env:
           # Should match 'name:' up above
           JOB_NAME: 'macOS (${{ matrix.python }})'
+
+  alls-green:
+    if: always()
+    needs:
+      - Windows
+      - Ubuntu
+      - macOS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether all jobs succeeded or not
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
