@@ -11,12 +11,13 @@ description = "Sniff out which async library your code is running under"
 readme = "README.rst"
 authors = [{name = "Nathaniel J. Smith", email = "njs@pobox.com"}]
 license = {text = "MIT OR Apache-2.0"}
-keywords = ["async", "trio", "asyncio"]
+keywords = ["async", "trio", "asyncio", "twisted"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "License :: OSI Approved :: Apache Software License",
     "Framework :: Trio",
     "Framework :: AsyncIO",
+    "Framework :: Twisted",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: Microsoft :: Windows",
