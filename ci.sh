@@ -43,10 +43,7 @@ EOF
     exit 0
 fi
 
-pip install .
-
-# Actual tests
-pip install -Ur test-requirements.txt
+pip install --upgrade --group test .
 
 mkdir empty
 cd empty

@@ -20,7 +20,7 @@ jobs:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
           cache: pip
-          cache-dependency-path: test-requirements.txt
+          cache-dependency-path: pyproject.toml
       - name: Run tests
         run: ./ci.sh
         shell: bash
@@ -51,7 +51,7 @@ jobs:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
           cache: pip
-          cache-dependency-path: test-requirements.txt
+          cache-dependency-path: pyproject.toml
       - name: Run tests
         run: ./ci.sh
         env:
@@ -76,7 +76,7 @@ jobs:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
           cache: pip
-          cache-dependency-path: test-requirements.txt
+          cache-dependency-path: pyproject.toml
       - name: Set PYTHON_GIL
         if: endsWith(matrix.python-version, 't')
         run: |
