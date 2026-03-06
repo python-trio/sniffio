@@ -34,6 +34,18 @@ Homepage = "https://github.com/python-trio/sniffio"
 Documentation = "https://sniffio.readthedocs.io/"
 Changelog = "https://sniffio.readthedocs.io/en/latest/history.html"
 
+[dependency-groups]
+test = [
+    "pytest",
+    "pytest-cov",
+    "curio",
+]
+rtd = [
+    "sphinx >= 1.6.1",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-trio",
+]
+
 [tool.setuptools.dynamic]
 version = {attr = "sniffio._version.__version__"}
 
