@@ -1,0 +1,1 @@
+Stop depending on the unmaintained PyPI ``curio`` package in tests; keep curio detection covered with a lightweight stub.

@@ -1,5 +1,5 @@
-import os
 import sys
+import types
 
 import pytest
 
@@ -58,27 +58,30 @@ def test_asyncio():
         current_async_library()
 
 
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12),
-    reason=
-    "curio broken on 3.12 (https://github.com/python-trio/sniffio/pull/42)",
-)
-def test_curio():
-    import curio
+def test_curio_detection_without_installing_curio():
+    """Exercise the curio branch without the deprecated PyPI package.
 
+    Curio no longer ships releases on PyPI (see issue #34). Runtime support
+    remains for environments that still vendor curio; this test stubs the
+    tiny public surface sniffio actually imports.
+    """
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
 
-    ran = []
+    meta = types.ModuleType("curio.meta")
+    meta.curio_running = lambda: True
+    curio = types.ModuleType("curio")
+    curio.meta = meta
 
-    async def this_is_curio():
+    sys.modules["curio"] = curio
+    sys.modules["curio.meta"] = meta
+    try:
         assert current_async_library() == "curio"
         # Call it a second time to exercise the caching logic
         assert current_async_library() == "curio"
-        ran.append(True)
-
-    curio.run(this_is_curio)
-    assert ran == [True]
+    finally:
+        sys.modules.pop("curio.meta", None)
+        sys.modules.pop("curio", None)
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()

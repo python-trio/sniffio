@@ -38,7 +38,6 @@ Changelog = "https://sniffio.readthedocs.io/en/latest/history.html"
 test = [
     "pytest",
     "pytest-cov",
-    "curio",
 ]
 rtd = [
     "sphinx >= 1.6.1",
