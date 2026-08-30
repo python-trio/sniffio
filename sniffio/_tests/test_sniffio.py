@@ -58,6 +58,25 @@ def test_asyncio():
         current_async_library()
 
 
+def test_asyncio_running_loop_without_task():
+    import asyncio
+
+    result = []
+
+    def sync_cb():
+        result.append(current_async_library())
+        loop.stop()
+
+    loop = asyncio.new_event_loop()
+    try:
+        loop.call_soon(sync_cb)
+        loop.run_forever()
+    finally:
+        loop.close()
+
+    assert result == ["asyncio"]
+
+
 @pytest.mark.skipif(
     sys.version_info >= (3, 12),
     reason=

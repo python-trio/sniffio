@@ -83,6 +83,15 @@ def current_async_library() -> str:
                 return "asyncio"
         except RuntimeError:
             pass
+        else:
+            # Running loop, but not inside a Task (Twisted asyncioreactor,
+            # call_soon callbacks, etc.)
+            try:
+                asyncio.get_running_loop()
+            except RuntimeError:
+                pass
+            else:
+                return "asyncio"
 
     # Sniff for curio (for now)
     if 'curio' in sys.modules:
