@@ -64,8 +64,10 @@ def test_asyncio_running_loop_without_task():
     result = []
 
     def sync_cb():
-        result.append(current_async_library())
-        loop.stop()
+        try:
+            result.append(current_async_library())
+        finally:
+            loop.stop()
 
     loop = asyncio.new_event_loop()
     try:

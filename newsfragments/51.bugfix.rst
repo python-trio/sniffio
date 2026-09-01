@@ -1,0 +1,3 @@
+``current_async_library`` now reports ``asyncio`` when an event loop is
+running but there is no current Task, such as in ``call_soon`` callbacks
+and Twisted's asyncioreactor.
