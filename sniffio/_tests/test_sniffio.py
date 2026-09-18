@@ -82,3 +82,26 @@ def test_curio():
 
     with pytest.raises(AsyncLibraryNotFoundError):
         current_async_library()
+
+
+def test_empty_name_ignored():
+    with pytest.raises(AsyncLibraryNotFoundError):
+        current_async_library()
+    old_name, thread_local.name = thread_local.name, ""
+    try:
+        with pytest.raises(AsyncLibraryNotFoundError):
+            current_async_library()
+    finally:
+        thread_local.name = old_name
+    token = current_async_library_cvar.set("")
+    try:
+        with pytest.raises(AsyncLibraryNotFoundError):
+            current_async_library()
+    finally:
+        current_async_library_cvar.reset(token)
+    old_name, thread_local.name = thread_local.name, 123  # type: ignore[assignment]
+    try:
+        with pytest.raises(AsyncLibraryNotFoundError):
+            current_async_library()
+    finally:
+        thread_local.name = old_name

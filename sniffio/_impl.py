@@ -64,11 +64,13 @@ def current_async_library() -> str:
 
     """
     value = thread_local.name
-    if value is not None:
+    # Empty / non-str overrides are programmer errors; treat as unset so we
+    # keep sniffing instead of returning a false library name.
+    if isinstance(value, str) and value:
         return value
 
     value = current_async_library_cvar.get()
-    if value is not None:
+    if isinstance(value, str) and value:
         return value
 
     # Need to sniff for asyncio
