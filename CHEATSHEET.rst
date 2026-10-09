@@ -4,7 +4,7 @@ Tips
 To run tests
 ------------
 
-* Install requirements: ``pip install -r test-requirements.txt``
+* Install requirements: ``pip install -e ".[test]"``
   (possibly in a virtualenv)
 
 * Actually run the tests: ``pytest sniffio``
@@ -13,11 +13,9 @@ To run tests
 To run yapf
 -----------
 
-* Show what changes yapf wants to make: ``yapf -rpd setup.py
-  sniffio``
+* Show what changes yapf wants to make: ``yapf -rpd sniffio``
 
-* Apply all changes directly to the source tree: ``yapf -rpi setup.py
-  sniffio``
+* Apply all changes directly to the source tree: ``yapf -rpi sniffio``
 
 
 To make a release
@@ -33,7 +31,7 @@ To make a release
 
 * Double-check it all works, docs build, etc.
 
-* Build your sdist and wheel: ``python setup.py sdist bdist_wheel``
+* Build your sdist and wheel: ``python -m build``
 
 * Upload to PyPI: ``twine upload dist/*``
 
